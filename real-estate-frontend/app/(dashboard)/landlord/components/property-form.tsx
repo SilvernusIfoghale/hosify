@@ -2,6 +2,7 @@
 
 import type React from "react";
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -728,11 +729,14 @@ export function PropertyForm() {
                 {uploadedMedia.map((media, index) => (
                   <div key={index} className="relative group">
                     {media.type === "image" ? (
-                      <img
-                        src={media.preview || "/placeholder.svg"}
-                        alt={`Preview ${index}`}
-                        className="w-full h-20 object-cover rounded-xl"
-                      />
+                      <div className="relative w-full h-20">
+                        <Image
+                          src={media.preview || "/placeholder.svg"}
+                          alt={`Preview ${index}`}
+                          fill
+                          className="object-cover rounded-xl"
+                        />
+                      </div>
                     ) : (
                       <video
                         src={media.preview}

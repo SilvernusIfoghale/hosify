@@ -677,4 +677,4 @@ const Page = () => {
     </div>
   );
 };
-export default page;
+export default Page;

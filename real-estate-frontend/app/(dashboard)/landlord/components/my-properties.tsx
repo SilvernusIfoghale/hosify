@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { usePropertyStore } from "@/app/store/property-store";
-import { type Property } from "@/app/api/landlord-client";
 import Image from "next/image";
 
 interface MyPropertiesProps {

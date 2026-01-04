@@ -54,9 +54,10 @@ const Page: React.FC = () => {
         } else {
           setError("Failed to load properties");
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error fetching properties:", err);
-        setError(err.response?.data?.message || "Failed to load properties");
+        const error = err as { response?: { data?: { message?: string } } };
+        setError(error.response?.data?.message || "Failed to load properties");
       } finally {
         setLoading(false);
       }
@@ -81,9 +82,10 @@ const Page: React.FC = () => {
       setDeletingId(propertyId);
       await deletePropertyById(propertyId);
       setProperties(properties.filter((p) => p._id !== propertyId));
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error deleting property:", err);
-      alert(err.response?.data?.message || "Failed to delete property");
+      const error = err as { response?: { data?: { message?: string } } };
+      alert(error.response?.data?.message || "Failed to delete property");
     } finally {
       setDeletingId(null);
     }

@@ -9,6 +9,7 @@ import {
   getTenantFavorites,
   calculateTenantStats,
   type TenantStats,
+  type Property,
 } from "@/app/api/tenant-client";
 import { useAuthStore } from "@/app/store/authStore";
 
@@ -37,7 +38,11 @@ export function TenantStatsCards() {
         ]);
 
         // Try to get favorites, but don't fail if it errors
-        let favoritesResponse = { success: true, count: 0, favourites: [] };
+        let favoritesResponse: {
+          success: boolean;
+          count: number;
+          favourites: Property[];
+        } = { success: true, count: 0, favourites: [] };
         try {
           const fav = await getTenantFavorites();
           favoritesResponse = fav || {

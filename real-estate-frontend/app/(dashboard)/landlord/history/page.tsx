@@ -42,9 +42,10 @@ const Page = () => {
         if (response.success) {
           setHistoryData(response.history);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error fetching history:", err);
-        setError(err.response?.data?.message || "Failed to load history");
+        const error = err as { response?: { data?: { message?: string } } };
+        setError(error.response?.data?.message || "Failed to load history");
       } finally {
         setLoading(false);
       }

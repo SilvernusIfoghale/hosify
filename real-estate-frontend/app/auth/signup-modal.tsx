@@ -59,7 +59,6 @@ export function SignupModal({
           ? (res as { message?: string }).message
           : undefined) || "Signup successful! Please verify your email."
       );
-      setSignupEmail(data.email);
       reset();
       switchToOtp();
     } catch (error) {

@@ -23,7 +23,6 @@ import { useAuthStore } from "@/app/store/authStore";
 
 const ReviewPage = () => {
   const { user } = useAuthStore();
-  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,7 +48,6 @@ const ReviewPage = () => {
       try {
         setLoading(true);
         const reviewsResponse = await getLandlordReviews(userId);
-        setReviews(reviewsResponse);
 
         // Calculate statistics
         const totalReviews = reviewsResponse.length;
@@ -71,9 +69,10 @@ const ReviewPage = () => {
           ratingDistribution,
           recentReviews: reviewsResponse.slice(0, 10), // Show last 10 reviews
         });
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error fetching reviews:", err);
-        setError(err.response?.data?.message || "Failed to load reviews");
+        const error = err as { response?: { data?: { message?: string } } };
+        setError(error.response?.data?.message || "Failed to load reviews");
       } finally {
         setLoading(false);
       }

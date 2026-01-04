@@ -1,6 +1,8 @@
 import { apiClient } from "./api-client";
 import { Property, History, Review, Verification } from "./landlord-client";
 
+export type { Property, Review, Verification };
+
 // ========== TENANT FAVORITES/RENTALS ENDPOINTS ==========
 
 // Get tenant's favorited properties

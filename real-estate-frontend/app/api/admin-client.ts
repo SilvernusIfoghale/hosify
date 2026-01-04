@@ -45,15 +45,56 @@ export interface Property {
   propertyType?: string;
   price?: number;
   currency?: string;
-  location?: unknown;
-  features?: unknown;
-  media?: unknown;
-  contact?: unknown;
-  metadata?: unknown;
+  location?: {
+    address?: string;
+    city?: string;
+    state?: string;
+    postalCode?: string;
+    coordinate?: {
+      lat: number;
+      lng: number;
+    };
+  };
+  features?: {
+    bedrooms?: number;
+    bathrooms?: number;
+    toilets?: number;
+    parkingSpaces?: number;
+    size?: number;
+    yearBuilt?: number;
+    furnishing?: string;
+    amenities?: string;
+    extras?: string;
+  };
+  media?: {
+    images?: Array<{
+      url: string;
+      public_id: string;
+    }>;
+    videos?: Array<{
+      url: string;
+      public_id: string;
+    }>;
+  };
+  contact?: {
+    phone?: string;
+    email?: string;
+  };
+  metadata?: {
+    views?: number;
+    isVerified?: boolean;
+  };
   condition?: string;
   ownership?: string;
   status?: string;
-  userId?: unknown;
+  userId?: {
+    name?: string;
+    email?: string;
+  };
+  landlord?: {
+    name?: string;
+    email?: string;
+  };
   createdAt?: string;
   [key: string]: unknown; // Allow additional properties
 }

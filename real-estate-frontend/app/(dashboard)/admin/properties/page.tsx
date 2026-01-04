@@ -92,7 +92,7 @@ const Page: React.FC = () => {
                     {p.description}
                   </div>
                   <div className="text-sm text-gray-500 mb-1">
-                    Landlord: {p.landlord.name} ({p.landlord.email})
+                    Landlord: {p.landlord?.name} ({p.landlord?.email})
                   </div>
                   <div className="text-sm text-gray-500">
                     Submitted:{" "}
