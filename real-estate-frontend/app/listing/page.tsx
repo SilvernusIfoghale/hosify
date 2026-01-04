@@ -1,6 +1,6 @@
 "use client";
 
-import { JSX } from "react";
+import { JSX, Suspense } from "react";
 import ListingHero from "../components/Listing/ListingHero";
 import ListingSearch from "../components/Listing/ListingSearch";
 import ListingCards from "../components/Listing/ListingCards";
@@ -17,7 +17,9 @@ const ListingPage = (): JSX.Element => {
     <SearchProvider>
       <div className="min-h-screen flex flex-col">
         <ListingHero />
-        <ListingSearch />
+        <Suspense fallback={<div>Loading search...</div>}>
+          <ListingSearch />
+        </Suspense>
         <ListingCards />
         <footer className="relative z-40">
           <Footer />
