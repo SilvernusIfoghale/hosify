@@ -6,7 +6,7 @@ import { showToast } from "@/app/utils/toast";
 const Page: React.FC = () => {
   const [listings, setListings] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const Page: React.FC = () => {
       } else {
         showToast.error("Failed to fetch listings");
       }
-    } catch (err) {
+    } catch {
       showToast.error("Error fetching listings");
     } finally {
       setLoading(false);
@@ -38,7 +38,7 @@ const Page: React.FC = () => {
       } else {
         showToast.error("Failed to approve listing");
       }
-    } catch (err) {
+    } catch {
       showToast.error("Error approving listing");
     } finally {
       setActionLoading(null);
@@ -55,7 +55,7 @@ const Page: React.FC = () => {
       } else {
         showToast.error("Failed to reject listing");
       }
-    } catch (err) {
+    } catch {
       showToast.error("Error rejecting listing");
     } finally {
       setActionLoading(null);
@@ -182,17 +182,22 @@ const Page: React.FC = () => {
                             <div className="flex gap-2 mt-2 overflow-x-auto">
                               {l.media.images
                                 .slice(0, 5)
-                                .map((img: any, index: number) => (
-                                  <img
-                                    key={index}
-                                    src={img.url}
-                                    alt={`Property image ${index + 1}`}
-                                    className="w-16 h-16 md:w-20 md:h-20 object-cover rounded border flex-shrink-0"
-                                    onError={(e) => {
-                                      e.currentTarget.style.display = "none";
-                                    }}
-                                  />
-                                ))}
+                                .map(
+                                  (
+                                    img: { url: string; public_id: string },
+                                    index: number
+                                  ) => (
+                                    <img
+                                      key={index}
+                                      src={img.url}
+                                      alt={`Property image ${index + 1}`}
+                                      className="w-16 h-16 md:w-20 md:h-20 object-cover rounded border flex-shrink-0"
+                                      onError={(e) => {
+                                        e.currentTarget.style.display = "none";
+                                      }}
+                                    />
+                                  )
+                                )}
                               {l.media.images.length > 5 && (
                                 <div className="w-16 h-16 md:w-20 md:h-20 bg-gray-100 rounded border flex items-center justify-center text-xs md:text-sm text-gray-600 flex-shrink-0">
                                   +{l.media.images.length - 5}
@@ -211,7 +216,10 @@ const Page: React.FC = () => {
                             </span>
                             <div className="flex gap-2 mt-2 flex-wrap">
                               {l.media.videos.map(
-                                (video: any, index: number) => (
+                                (
+                                  video: { url: string; public_id: string },
+                                  index: number
+                                ) => (
                                   <a
                                     key={index}
                                     href={video.url}
