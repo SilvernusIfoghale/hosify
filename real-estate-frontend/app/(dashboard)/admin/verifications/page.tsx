@@ -6,7 +6,7 @@ import { showToast } from "@/app/utils/toast";
 const Page = () => {
   const [verifications, setVerifications] = useState<Verification[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const Page = () => {
       } else {
         showToast.error("Failed to fetch verifications");
       }
-    } catch (err) {
+    } catch {
       showToast.error("Error fetching verifications");
     } finally {
       setLoading(false);
@@ -43,7 +43,7 @@ const Page = () => {
       } else {
         showToast.error(`Failed to ${action} verification`);
       }
-    } catch (err) {
+    } catch {
       showToast.error(`Error ${action}ing verification`);
     } finally {
       setActionLoading(null);

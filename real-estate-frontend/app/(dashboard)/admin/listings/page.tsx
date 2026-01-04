@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { adminAPI, type Property } from "@/app/api/admin-client";
 import { showToast } from "@/app/utils/toast";
 
@@ -187,15 +188,21 @@ const Page: React.FC = () => {
                                     img: { url: string; public_id: string },
                                     index: number
                                   ) => (
-                                    <img
+                                    <div
                                       key={index}
-                                      src={img.url}
-                                      alt={`Property image ${index + 1}`}
-                                      className="w-16 h-16 md:w-20 md:h-20 object-cover rounded border flex-shrink-0"
-                                      onError={(e) => {
-                                        e.currentTarget.style.display = "none";
-                                      }}
-                                    />
+                                      className="relative w-16 h-16 md:w-20 md:h-20 flex-shrink-0"
+                                    >
+                                      <Image
+                                        src={img.url}
+                                        alt={`Property image ${index + 1}`}
+                                        fill
+                                        className="object-cover rounded border"
+                                        onError={(e) => {
+                                          e.currentTarget.style.display =
+                                            "none";
+                                        }}
+                                      />
+                                    </div>
                                   )
                                 )}
                               {l.media.images.length > 5 && (
