@@ -45,17 +45,17 @@ export interface Property {
   propertyType?: string;
   price?: number;
   currency?: string;
-  location?: any;
-  features?: any;
-  media?: any;
-  contact?: any;
-  metadata?: any;
+  location?: unknown;
+  features?: unknown;
+  media?: unknown;
+  contact?: unknown;
+  metadata?: unknown;
   condition?: string;
   ownership?: string;
   status?: string;
-  userId?: any;
+  userId?: unknown;
   createdAt?: string;
-  [key: string]: any; // Allow additional properties
+  [key: string]: unknown; // Allow additional properties
 }
 
 export interface Report {

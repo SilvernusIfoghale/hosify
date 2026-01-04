@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Input } from "@/components/ui/input";
 import {
   CheckCircle,
   AlertCircle,
@@ -35,7 +34,7 @@ const ID_TYPES: Array<Verification["idType"]> = [
   "voter_card",
 ];
 
-const page = () => {
+const Page = () => {
   const { user } = useAuthStore();
   const router = useRouter();
   const [verification, setVerification] = useState<Verification | null>(null);
@@ -52,9 +51,10 @@ const page = () => {
       setLoading(true);
       const res = await getMyVerification();
       setVerification(res.verification || null);
-    } catch (e: any) {
+    } catch (e: unknown) {
+      const error = e as { response?: { data?: { message?: string } } };
       setError(
-        e?.response?.data?.message || "Failed to load verification status"
+        error?.response?.data?.message || "Failed to load verification status"
       );
     } finally {
       setLoading(false);
@@ -174,8 +174,9 @@ const page = () => {
       const res = await submitVerification(formData);
       setVerification(res.verification);
       resetForm();
-    } catch (e: any) {
-      setError(e?.response?.data?.message || "Submission failed");
+    } catch (e: unknown) {
+      const error = e as { response?: { data?: { message?: string } } };
+      setError(error?.response?.data?.message || "Submission failed");
     } finally {
       setSubmitting(false);
     }
@@ -195,8 +196,9 @@ const page = () => {
         doc.public_id
       );
       await fetchVerification();
-    } catch (e: any) {
-      alert(e?.response?.data?.message || "Failed to remove document");
+    } catch (e: unknown) {
+      const error = e as { response?: { data?: { message?: string } } };
+      alert(error?.response?.data?.message || "Failed to remove document");
     } finally {
       setRemoveLoading(null);
     }
