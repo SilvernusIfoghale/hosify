@@ -11,8 +11,6 @@ import {
   MapPin,
   Phone,
   Mail,
-  Calendar,
-  Eye,
   ArrowLeft,
   Building2,
   Car,
@@ -32,7 +30,6 @@ import { useAuthStore } from "@/app/store/authStore";
 import { RequestRentalModal } from "@/app/(dashboard)/tenant/components/request-rental-modal";
 import { LeaveReviewModal } from "@/app/(dashboard)/tenant/components/leave-review-modal";
 import {
-  getTenantHistory,
   getTenantFavorites,
   addTenantFavorite,
   removeTenantFavorite,
@@ -50,8 +47,7 @@ const PropertyDetailPage = () => {
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
   const [isRentalModalOpen, setIsRentalModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const [tenantHistory, setTenantHistory] = useState<any[]>([]);
-  const [hasRentalHistory, setHasRentalHistory] = useState(false);
+  const [hasRentalHistory] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
   const [toggleFavLoading, setToggleFavLoading] = useState(false);
 
@@ -74,27 +70,13 @@ const PropertyDetailPage = () => {
         } else {
           setError("Property not found");
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error fetching property:", err);
-        setError(err.response?.data?.message || "Failed to load property");
+        setError(
+          err instanceof Error ? err.message : "Failed to load property"
+        );
       } finally {
         setLoading(false);
-      }
-    };
-
-    // Fetch tenant history if user is a tenant
-    const fetchTenantHistory = async () => {
-      if (user?.role?.toLowerCase() === "tenant") {
-        try {
-          const historyResponse = await getTenantHistory();
-          if (historyResponse.success && historyResponse.history) {
-            setTenantHistory(historyResponse.history);
-            // Check if tenant has any rental history
-            setHasRentalHistory(historyResponse.history.length > 0);
-          }
-        } catch (err) {
-          console.error("Error fetching tenant history:", err);
-        }
       }
     };
 
@@ -105,7 +87,7 @@ const PropertyDetailPage = () => {
           const favResponse = await getTenantFavorites();
           if (favResponse.success && favResponse.favourites) {
             const isFav = favResponse.favourites.some(
-              (fav: any) => fav._id === propertyId
+              (fav: Property) => fav._id === propertyId
             );
             setIsFavorited(isFav);
           }
@@ -116,24 +98,8 @@ const PropertyDetailPage = () => {
     };
 
     fetchProperty();
-    fetchTenantHistory();
     fetchFavoriteStatus();
   }, [propertyId, user, isInitialized]);
-
-  const formatFeatures = (property: Property) => {
-    const features = [];
-    if (property.features?.bedrooms)
-      features.push(`${property.features.bedrooms} Bedrooms`);
-    if (property.features?.bathrooms)
-      features.push(`${property.features.bathrooms} Bathrooms`);
-    if (property.features?.toilets)
-      features.push(`${property.features.toilets} Toilets`);
-    if (property.features?.parkingSpaces)
-      features.push(`${property.features.parkingSpaces} Parking`);
-    if (property.features?.size)
-      features.push(`${property.features.size} sqft`);
-    return features;
-  };
 
   const handleToggleFavorite = async () => {
     if (!user) {
@@ -659,17 +625,7 @@ const PropertyDetailPage = () => {
           propertyTitle={property.title}
           onSuccess={() => {
             // Refresh tenant history after successful rental request
-            if (user?.role?.toLowerCase() === "tenant") {
-              getTenantHistory()
-                .then((historyResponse) => {
-                  if (historyResponse.success && historyResponse.history) {
-                    setTenantHistory(historyResponse.history);
-                  }
-                })
-                .catch((err) =>
-                  console.error("Error refreshing history:", err)
-                );
-            }
+            // Note: tenantHistory is not used, so skipping refresh
           }}
         />
       )}

@@ -27,7 +27,6 @@ export function SignupModal({
   onSwitchToLogin,
 }: SignupModalProps) {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [signupEmail, setSignupEmail] = React.useState<string>("");
   const registerUser = useAuthStore((state) => state.registerUser);
   const { switchToOtp } = useAuthModals();
 

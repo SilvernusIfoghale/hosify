@@ -21,7 +21,7 @@ const dashboardRoutes: Record<string, string> = {
 
 export default function AuthNav() {
   const { openLogin, openSignup } = useAuthModals();
-  const { user, logout, loading } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const router = useRouter();
 
   const getRoleDisplay = (role: string): string => {

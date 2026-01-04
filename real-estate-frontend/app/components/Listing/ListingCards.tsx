@@ -12,6 +12,7 @@ import {
   getTenantFavorites,
 } from "@/app/api/tenant-client";
 import { useAuthStore } from "@/app/store/authStore";
+import { Property } from "@/app/api/landlord-client";
 import toast from "react-hot-toast";
 
 /**
@@ -26,8 +27,6 @@ const ListingCards = (): JSX.Element => {
   const { user } = useAuthStore();
   const [filteredProperties, setFilteredProperties] =
     useState(verifiedProperties);
-  const [favorites, setFavorites] = useState<string[]>([]);
-  const [loadingFavorites, setLoadingFavorites] = useState(false);
   const [favoriteStates, setFavoriteStates] = useState<{
     [key: string]: boolean;
   }>({});
@@ -41,11 +40,9 @@ const ListingCards = (): JSX.Element => {
     if (user) {
       const fetchFavorites = async () => {
         try {
-          setLoadingFavorites(true);
           const response = await getTenantFavorites();
           if (response.success && response.favourites) {
-            const favIds = response.favourites.map((fav: any) => fav._id);
-            setFavorites(favIds);
+            const favIds = response.favourites.map((fav: Property) => fav._id);
             // Initialize favorite states
             const states: { [key: string]: boolean } = {};
             favIds.forEach((id: string) => {
@@ -55,8 +52,6 @@ const ListingCards = (): JSX.Element => {
           }
         } catch (error) {
           console.error("Error fetching favorites:", error);
-        } finally {
-          setLoadingFavorites(false);
         }
       };
       fetchFavorites();
